@@ -25,7 +25,7 @@ const onSubmit = async (event: FormSubmitEvent<formSchema>) => {
     body: JSON.stringify(event.data),
   }).then(res => res.json());
 
-  router.push('/login');
+  await router.push('/login');
 }
 </script>
 

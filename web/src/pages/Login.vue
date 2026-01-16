@@ -2,6 +2,9 @@
 import { reactive } from 'vue';
 import z from 'zod';
 import type { FormSubmitEvent } from '@nuxt/ui';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const formSchema = z.object({
   username: z.string().min(3, 'Le nom d\'utilisateur doit contenir au moins 3 caractères'),
@@ -24,7 +27,9 @@ const onSubmit = async (event: FormSubmitEvent<FormSchema>) => {
     body: JSON.stringify(event.data),
   }).then(res => res.json());
 
-  console.log(response);
+  localStorage.setItem('token', response.token);
+
+  await router.push('/');
 };
 </script>
 
