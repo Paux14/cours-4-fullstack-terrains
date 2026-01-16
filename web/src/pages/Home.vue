@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { backend } from '@/utils/backend';
 import { onMounted, ref } from 'vue';
 
 
@@ -17,19 +18,9 @@ type Terrain = {
 }
 
 const terrains = ref<Terrain[]>([])
-function getTerrains() {
-  fetch("http://localhost:8000/terrains", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${localStorage.getItem('token')}`
-    },
-  })
-    .then(res => res.json())
-    .then(data => {
-
-      terrains.value = data;
-    });
+async function getTerrains() {
+  const terrainsRes = await backend.terrains.getAll();
+  terrains.value = terrainsRes;
 }
 
 onMounted(() => {

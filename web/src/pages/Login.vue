@@ -3,6 +3,7 @@ import { reactive } from 'vue';
 import z from 'zod';
 import type { FormSubmitEvent } from '@nuxt/ui';
 import { useRouter } from 'vue-router';
+import { backend } from '@/utils/backend';
 
 const router = useRouter();
 
@@ -19,15 +20,9 @@ const form = reactive<Partial<FormSchema>>({
 })
 
 const onSubmit = async (event: FormSubmitEvent<FormSchema>) => {
-  const response = await fetch("http://localhost:8000/auth/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(event.data),
-  }).then(res => res.json());
+  const { token } = await backend.auth.login(event.data);
 
-  localStorage.setItem('token', response.token);
+  localStorage.setItem('token', token);
 
   await router.push('/');
 };
