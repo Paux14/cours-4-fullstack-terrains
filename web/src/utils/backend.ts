@@ -61,6 +61,16 @@ export const backend = {
         body: params,
       })
     },
+
+    uploadPhoto(terrainId: string, file: File) {
+      const formData = new FormData()
+      formData.append('file', file)
+
+      return backendFetch<{ success: boolean }>(`/terrains/${terrainId}/photos`, {
+        method: 'POST',
+        body: formData,
+      })
+    },
   },
 }
 
